@@ -3,14 +3,24 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const app = express();
 
+const app = express();
+// middleware
 app.use(cors());
 app.use(express.json());
+// ================== ROUTES ==================
+const authRoutes = require('./routes/auth');
+const itemRoutes = require('./routes/items');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bargain-bunny')
+// ================== Finished ROUTES ==================
+
+// ================== MONGODB CONNECTION ==================
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-const PORT = process.env.PORT || 6000;
+app.use('/api/auth', authRoutes);
+app.use('/api/items', itemRoutes);
+app.get('/s', (req, res) => res.send({ message: 'Server is running' }));
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
