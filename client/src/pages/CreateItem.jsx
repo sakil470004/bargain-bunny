@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useItems } from '../contexts/ItemContext';
 import { FaTag, FaMoneyBill, FaInfo, FaImage } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+// for location input
+import LocationInput from '../components/LocationInput';
 
 const CreateItem = () => {
   const navigate = useNavigate();
@@ -14,11 +16,14 @@ const CreateItem = () => {
     condition: 'Good',
     category: 'Other',
     images: [""], // Array for multiple image URLs
-    location: {
-      type: 'Point',
-      coordinates: [0, 0]
-    }
+    location: null
   });
+  const handleLocationSelect = (locationData) => {
+    setFormData(prev => ({
+      ...prev,
+      location: locationData
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -196,7 +201,12 @@ const CreateItem = () => {
             </select>
           </div>
         </div>
-
+        <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">
+          Location
+        </label>
+        <LocationInput onLocationSelect={handleLocationSelect} />
+      </div>
         <button type="submit" className="btn btn-primary w-full">
           Create Item
         </button>

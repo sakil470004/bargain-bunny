@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { FaUser, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import api from '../utils/api';
+import Map from '../components/Map';
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -73,7 +74,7 @@ const ItemDetails = () => {
               </div>
             )}
           </div>
-          
+
           {/* Thumbnail Images */}
           {item.images && item.images.length > 1 && (
             <div className="flex gap-2 overflow-x-auto">
@@ -82,9 +83,8 @@ const ItemDetails = () => {
                   key={index}
                   src={image}
                   alt={`Thumbnail ${index + 1}`}
-                  className={`w-20 h-20 object-cover cursor-pointer rounded ${
-                    currentImageIndex === index ? 'border-2 border-primary' : ''
-                  }`}
+                  className={`w-20 h-20 object-cover cursor-pointer rounded ${currentImageIndex === index ? 'border-2 border-primary' : ''
+                    }`}
                   onClick={() => setCurrentImageIndex(index)}
                 />
               ))}
@@ -96,16 +96,24 @@ const ItemDetails = () => {
         <div className="space-y-6">
           <h1 className="text-3xl font-bold">{item.title}</h1>
           <p className="text-2xl font-bold text-green-600">${item.price}</p>
-          
+
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-gray-600">
               <FaUser />
               <span>Seller: {item.seller.username}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-600">
+            {/* <div className="flex items-center gap-2 text-gray-600">
               <FaMapMarkerAlt />
               <span>Location available upon contact</span>
-            </div>
+            </div> */}
+
+            {item.location && (
+              <div className="mt-6">
+                <h3 className="text-xl font-semibold mb-2">Location</h3>
+                <p className="mb-2">{item.location.address}</p>
+                <Map location={item.location} />
+              </div>
+            )}
             <div className="flex items-center gap-2 text-gray-600">
               <FaClock />
               <span>Posted: {new Date(item.createdAt).toLocaleDateString()}</span>

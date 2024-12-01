@@ -22,8 +22,17 @@ const itemSchema = new mongoose.Schema({
     coordinates: {
       type: [Number], // [longitude, latitude]
       required: true
-    }
+    },
+    // extra fields for storing address details
+    address: {
+      type: String,
+      required: true
+    },
+    city: String,
+    state: String,
+    country: String
   },
+
   images: [{
     type: String // URLs of images
   }],

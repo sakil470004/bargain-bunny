@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import { useItems } from '../contexts/ItemContext';
 
+
 const SearchBar = () => {
   const { filters, updateFilters, getAllItems } = useItems();
   const [showFilters, setShowFilters] = useState(false);
+  const [radius, setRadius] = useState(5); // 5km default
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ const SearchBar = () => {
       maxPrice: '',
       sortBy: 'newest'
     });
+    setRadius(5);
     getAllItems();
   };
 
@@ -138,6 +141,20 @@ const SearchBar = () => {
                   min="0"
                 />
               </div>
+            </div>
+            {/* location filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Distance (km)
+              </label>
+              <input
+                type="number"
+                value={radius}
+                onChange={(e) => setRadius(e.target.value)}
+                className="input"
+                min="1"
+                max="50"
+              />
             </div>
 
             {/* Clear Filters */}

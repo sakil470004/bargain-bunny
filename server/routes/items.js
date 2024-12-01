@@ -12,12 +12,25 @@ router.get('/', async (req, res) => {
       condition,
       minPrice,
       maxPrice,
-      sortBy
+      sortBy,
+      lat, lng, radius = 5
     } = req.query;
 
     // Build query
     let query = {};
-    
+    // If lat, lng are provided, add location filter
+    if (lat && lng) {
+      query.location = {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [parseFloat(lng), parseFloat(lat)]
+          },
+          $maxDistance: parseInt(radius) * 1000 // Convert km to meters
+        }
+      };
+    }
+    // --------------- finished location filter ----------------
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: 'i' } },
@@ -82,8 +95,8 @@ router.get('/:id', async (req, res) => {
 // Create item (protected route)
 router.post('/', auth, async (req, res) => {
   try {
-    const { title, description, price, location, condition, category,images } = req.body;
-    
+    const { title, description, price, location, condition, category, images } = req.body;
+
     const newItem = new Item({
       title,
       description,
