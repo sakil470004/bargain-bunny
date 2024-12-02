@@ -7,7 +7,7 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   try {
-    console.log("hit")
+
     const { username, email, password } = req.body;
 
     // Check if user exists
@@ -41,7 +41,6 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
-    console.log("hit")
     const { email, password } = req.body;
 
     // Find user
