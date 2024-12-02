@@ -6,6 +6,7 @@ import Navbar from './components/shared/Navbar';
 import { ItemProvider } from './contexts/ItemContext';
 import CreateItem from './pages/CreateItem';
 import ItemDetails from './pages/ItemDetails';
+import TransactionHistory from './pages/TransactionHistory';
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/create-item" element={<CreateItem />} />
                 {/* <Route path="/search" element={<Search />} /> */}
                 <Route path="/item/:id" element={<ItemDetails />} />
+                <Route path="/transactions" element={<TransactionHistory />} />
               </Routes>
             </Suspense>
           </main>
