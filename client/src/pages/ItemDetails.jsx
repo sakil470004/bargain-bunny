@@ -5,6 +5,8 @@ import { FaUser, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import api from '../utils/api';
 import Map from '../components/Map';
+// for payment
+import PaymentModal from '../components/PaymentModal';
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -13,6 +15,12 @@ const ItemDetails = () => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // for payment
+  const [showPayment, setShowPayment] = useState(false);
+  const handlePaymentSuccess = async () => {
+    // Update item status or handle success
+    toast.success('Item purchased successfully!');
+  };
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -151,7 +159,24 @@ const ItemDetails = () => {
               This is your listing
             </div>
           )}
+          {/* this is payment section */}
+          {user && user.id !== item.seller._id && <>
+            <button
+            onClick={() => setShowPayment(true)}
+            className="btn btn-primary w-full"
+          >
+            Buy Now - ${item.price}
+          </button>
 
+          <PaymentModal
+            isOpen={showPayment}
+            onClose={() => setShowPayment(false)}
+            amount={item.price}
+            itemId={item._id}
+            onSuccess={handlePaymentSuccess}
+          />
+          </>}
+          {/* end of the payment section */}
           {/* Show login prompt if not logged in */}
           {!user && (
             <div className="text-center space-y-2">
