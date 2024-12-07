@@ -12,12 +12,11 @@ const Navbar = () => {
           <Link to="/" className="text-2xl font-bold text-primary">
             BargainBunny
           </Link>
-
-          <div className="flex items-center gap-4">
+         <div className="flex items-center gap-4">
             <Link to="/" className="text-gray-600 hover:text-primary">
               <FaHome size={20} />
             </Link>
-            <Link to="/search" className="text-gray-600 hover:text-primary">
+            <Link to="/search"        className="text-gray-600 hover:text-primary">
               <FaSearch size={20} />
             </Link>
             {user ? (
