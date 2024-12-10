@@ -1,66 +1,39 @@
 // client/src/contexts/DashboardContext.jsx
-import  { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 const DashboardContext = createContext();
 
-// Action Types
-const ACTIONS = {
-  SET_LOADING: 'SET_LOADING',
-  SET_ERROR: 'SET_ERROR',
-  SET_USER_STATS: 'SET_USER_STATS',
-  SET_ADMIN_STATS: 'SET_ADMIN_STATS',
-  SET_LISTINGS: 'SET_LISTINGS',
-  SET_TRANSACTIONS: 'SET_TRANSACTIONS',
-};
+export const DashboardProvider = ({ children }) => {
+  // State for loading and error handling
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-// Initial State
-const initialState = {
-  loading: false,
-  error: null,
-  userStats: {
+  // State for user dashboard
+  const [userStats, setUserStats] = useState({
     activeListings: 0,
     completedTransactions: 0,
     recentListings: [],
     recentTransactions: []
-  },
-  adminStats: {
+  });
+
+  // State for admin dashboard
+  const [adminStats, setAdminStats] = useState({
     userCount: 0,
     itemCount: 0,
     transactionCount: 0,
     recentTransactions: []
-  },
-  listings: [],
-  transactions: []
-};
+  });
 
-// Reducer
-const dashboardReducer = (state, action) => {
-  switch (action.type) {
-    case ACTIONS.SET_LOADING:
-      return { ...state, loading: action.payload };
-    case ACTIONS.SET_ERROR:
-      return { ...state, error: action.payload };
-    case ACTIONS.SET_USER_STATS:
-      return { ...state, userStats: action.payload };
-    case ACTIONS.SET_ADMIN_STATS:
-      return { ...state, adminStats: action.payload };
-    case ACTIONS.SET_LISTINGS:
-      return { ...state, listings: action.payload };
-    case ACTIONS.SET_TRANSACTIONS:
-      return { ...state, transactions: action.payload };
-    default:
-      return state;
-  }
-};
+  // State for listings and transactions
+  const [listings, setListings] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
-// Provider Component
-export const DashboardProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(dashboardReducer, initialState);
-
-  // API calls
+  // Fetch user dashboard stats
   const fetchUserStats = async () => {
     try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+      setLoading(true);
+      setError(null);
+      
       const response = await fetch('/api/dashboard/user-stats', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -70,17 +43,20 @@ export const DashboardProvider = ({ children }) => {
       
       if (!response.ok) throw new Error(data.message);
       
-      dispatch({ type: ACTIONS.SET_USER_STATS, payload: data });
-    } catch (error) {
-      dispatch({ type: ACTIONS.SET_ERROR, payload: error.message });
+      setUserStats(data);
+    } catch (err) {
+      setError(err.message);
     } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+      setLoading(false);
     }
   };
 
+  // Fetch admin dashboard stats
   const fetchAdminStats = async () => {
     try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+      setLoading(true);
+      setError(null);
+      
       const response = await fetch('/api/admin/stats', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -90,17 +66,20 @@ export const DashboardProvider = ({ children }) => {
       
       if (!response.ok) throw new Error(data.message);
       
-      dispatch({ type: ACTIONS.SET_ADMIN_STATS, payload: data });
-    } catch (error) {
-      dispatch({ type: ACTIONS.SET_ERROR, payload: error.message });
+      setAdminStats(data);
+    } catch (err) {
+      setError(err.message);
     } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+      setLoading(false);
     }
   };
 
+  // Fetch user listings
   const fetchListings = async () => {
     try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+      setLoading(true);
+      setError(null);
+      
       const response = await fetch('/api/dashboard/listings', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -110,17 +89,20 @@ export const DashboardProvider = ({ children }) => {
       
       if (!response.ok) throw new Error(data.message);
       
-      dispatch({ type: ACTIONS.SET_LISTINGS, payload: data });
-    } catch (error) {
-      dispatch({ type: ACTIONS.SET_ERROR, payload: error.message });
+      setListings(data);
+    } catch (err) {
+      setError(err.message);
     } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+      setLoading(false);
     }
   };
 
+  // Fetch user transactions
   const fetchTransactions = async () => {
     try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+      setLoading(true);
+      setError(null);
+      
       const response = await fetch('/api/dashboard/transactions', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -130,30 +112,38 @@ export const DashboardProvider = ({ children }) => {
       
       if (!response.ok) throw new Error(data.message);
       
-      dispatch({ type: ACTIONS.SET_TRANSACTIONS, payload: data });
-    } catch (error) {
-      dispatch({ type: ACTIONS.SET_ERROR, payload: error.message });
+      setTransactions(data);
+    } catch (err) {
+      setError(err.message);
     } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+      setLoading(false);
     }
   };
 
+  // Values to be provided to consumers
+  const value = {
+    // States
+    loading,
+    error,
+    userStats,
+    adminStats,
+    listings,
+    transactions,
+    // Functions
+    fetchUserStats,
+    fetchAdminStats,
+    fetchListings,
+    fetchTransactions
+  };
+
   return (
-    <DashboardContext.Provider 
-      value={{
-        ...state,
-        fetchUserStats,
-        fetchAdminStats,
-        fetchListings,
-        fetchTransactions
-      }}
-    >
+    <DashboardContext.Provider value={value}>
       {children}
     </DashboardContext.Provider>
   );
 };
 
-// Custom Hook
+// Custom hook for using the dashboard context
 export const useDashboard = () => {
   const context = useContext(DashboardContext);
   if (!context) {
