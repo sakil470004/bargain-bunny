@@ -1,8 +1,7 @@
 // client/src/pages/UserDashboard.jsx
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import { useDashboard } from '../contexts/DashboardContext';
-import Overview from '../components/dashboard/user/Overview';
-import MyListings from '../components/dashboard/user/MyListings';
 
 const UserDashboard = () => {
   const { loading, error } = useDashboard();
@@ -18,11 +17,8 @@ const UserDashboard = () => {
         </h1>
       </div>
       
-      {/* Main Content */}
-      <div className="grid grid-cols-1 gap-6">
-        <Overview />
-        <MyListings />
-      </div>
+      {/* Outlet renders the nested route components */}
+      <Outlet />
     </div>
   );
 };
