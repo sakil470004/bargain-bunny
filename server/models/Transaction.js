@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
-  buyer: {
+  seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  seller: {
+  buyer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
@@ -20,11 +20,15 @@ const transactionSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  stripePaymentId: String,
+  // before default was completed
   status: {
     type: String,
-    enum: ['completed', 'refunded', 'failed'],
-    default: 'completed'
+    enum: ['pending', 'completed', 'cancelled'],
+    default: 'pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 }, { timestamps: true });
 

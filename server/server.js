@@ -12,6 +12,8 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/items');
 const paymentRoutes = require('./routes/payment');
+const adminRoutes = require('./routes/admin');
+const dashboardRoutes = require('./routes/dashboard');
 
 // ================== Finished ROUTES ==================
 
@@ -24,7 +26,10 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/payment', paymentRoutes);
-app.get('/s', (req, res) => res.send({ message: 'Server is running' }));
+app.use('/api/admin', adminRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+// test route
+app.get('/test', (req, res) => res.send({ message: 'Server is running' }));
 // ================== Finished USE ROUTES ==================
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
