@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <div className="max-w-6xl container mx-auto mt-10">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Available Items</h1>
         <Link to="/create-item" className="btn btn-primary flex items-center gap-2">

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaExchangeAlt, FaHome, FaSearch, FaSignOutAlt } from 'react-icons/fa';
+import { FaBookOpen, FaExchangeAlt, FaHome, FaSearch, FaSignOutAlt } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = () => {
@@ -16,11 +16,13 @@ const Navbar = () => {
             <Link to="/" className="text-gray-600 hover:text-primary">
               <FaHome size={20} />
             </Link>
-            <Link to="/search"        className="text-gray-600 hover:text-primary">
-              <FaSearch size={20} />
-            </Link>
+            
             {user ? (
               <>
+              <Link to="/dashboard" 
+               className="text-gray-600 hover:text-primary">
+              <FaBookOpen size={20} />
+            </Link>
                 <Link title={`Transaction of ${user?.username}`} to="/transactions" className="text-gray-600 hover:text-primary">
                   <FaExchangeAlt size={20} />
                 </Link>
