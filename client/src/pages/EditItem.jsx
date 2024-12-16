@@ -44,6 +44,7 @@ const EditItem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(item);
       await api.put(`/items/${itemId}`, item);
       toast.success('Item updated successfully!');
       navigate('/dashboard');
@@ -198,22 +199,6 @@ const EditItem = () => {
             ))}
           </div>
         </div>
-
-        {item.location && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Location
-            </label>
-            <div className="flex items-center gap-2 text-gray-600">
-              <FaMapMarkerAlt />
-              <span>{item.location.address}</span>
-            </div>
-            <div className="mt-2 h-48">
-              <Map location={item.location} />
-            </div>
-          </div>
-        )}
-
         <div className="flex justify-end space-x-4">
           <button
             type="button"
@@ -229,6 +214,22 @@ const EditItem = () => {
             Save Changes
           </button>
         </div>
+        {item.location && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Location
+            </label>
+            <div className="flex items-center gap-2 text-gray-600">
+              <FaMapMarkerAlt />
+              <span>{item.location.address}</span>
+            </div>
+            <div className="mt-2 h-48 -z-10">
+              <Map className='-z-10' location={item.location} />
+            </div>
+          </div>
+        )}
+
+        
       </form>
     </div>
   );

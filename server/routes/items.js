@@ -148,13 +148,13 @@ router.delete('/:id', auth, async (req, res) => {
     if (!item) {
       return res.status(404).json({ message: 'Item not found' });
     }
-
     // Check if user owns the item
     if (item.seller.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Not authorized' });
     }
-
-    await item.remove();
+    // await item.remove();
+    // delete the items 
+    await Item.deleteOne({ _id: req.params.id });
     res.json({ message: 'Item removed' });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
