@@ -37,7 +37,9 @@ router.get('/transactions', auth, async (req, res) => {
     .populate('buyer', 'username')
     .populate('seller', 'username')
     .sort({ createdAt: -1 });
-
+    if(!transactions){
+      res.json({})
+    }
     res.json(transactions);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch transactions' });
