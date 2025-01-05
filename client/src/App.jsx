@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { Suspense, lazy } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import Navbar from './components/shared/Navbar';
+import Footer from './components/shared/Footer';
 import { ItemProvider } from './contexts/ItemContext';
 import CreateItem from './pages/CreateItem';
 import ItemDetails from './pages/ItemDetails';
@@ -21,21 +22,28 @@ const AppContent = () => {
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       {!isAuthPage && <Navbar />}
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/create-item" element={<CreateItem />} />
-          <Route path="/item/:id" element={<ItemDetails />} />
-          <Route path="/transactions" element={<TransactionHistory />} />
-          <Route path="/dashboard" element={<SellerDashboard />} />
-          <Route path="/edit-item/:itemId" element={<EditItem />} />
-        </Routes>
-      </Suspense>
-    </>
+      <main className="flex-grow">
+        <Suspense fallback={
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-gray-600">Loading...</div>
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/create-item" element={<CreateItem />} />
+            <Route path="/item/:id" element={<ItemDetails />} />
+            <Route path="/transactions" element={<TransactionHistory />} />
+            <Route path="/dashboard" element={<SellerDashboard />} />
+            <Route path="/edit-item/:itemId" element={<EditItem />} />
+          </Routes>
+        </Suspense>
+      </main>
+      {!isAuthPage && <Footer />}
+    </div>
   );
 };
 
