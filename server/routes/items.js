@@ -107,11 +107,13 @@ router.post('/', auth, async (req, res) => {
       images,
       seller: req.user.id // Will come from auth middleware
     });
-
     const savedItem = await newItem.save();
+    // console.log(savedItem)
+    // what next line do ?
     await savedItem.populate('seller', 'username');
     res.status(201).json(savedItem);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: 'Server error' });
   }
 });

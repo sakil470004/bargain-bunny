@@ -1,3 +1,4 @@
+// item.js //model
 const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({

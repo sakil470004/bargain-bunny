@@ -43,6 +43,7 @@ export const ItemProvider = ({ children }) => {
 
   const createItem = async (itemData) => {
     try {
+     
       const response = await api.post('/items', itemData);
       setItems([response.data, ...items]);
       toast.success('Item created successfully!');
