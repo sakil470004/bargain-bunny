@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa';
 
-
-
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
