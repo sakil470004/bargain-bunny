@@ -51,7 +51,7 @@ const CreateItem = () => {
       }
 
       // Filter out empty image URLs
-      const cleanedFormData = {
+      const cleanedFormData = { 
         ...formData,
         images: formData.images.filter(url => url.trim() !== '')
       };
