@@ -4,7 +4,7 @@ import { useItems } from '../contexts/ItemContext';
 import ItemCard from '../components/ItemCard';
 import SearchBar from '../components/SearchBar';
 import { Plus, Package, Filter } from 'lucide-react';
-
+// we drop the project because we don't have the backend yet to support the project. We will continue the project once we have the backend ready. and We don't have notification and location search future is not build on demo. This project main focus is to build the demo so that We can do that on large scale later.
 const Home = () => {
   const { items, loading, getAllItems } = useItems();
 
